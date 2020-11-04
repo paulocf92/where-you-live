@@ -1,21 +1,27 @@
 <template>
   <div class="container">
-    <div></div>
+    <AddressFinder />
   </div>
 </template>
 
 <script>
-export default {}
+import AddressFinder from '../components/AddressFinder.vue'
+
+export default {
+  components: {
+    AddressFinder,
+  },
+}
 </script>
 
 <style>
 .container {
-  margin: 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 0 0 20px;
   min-height: 100vh;
-  max-width: 800px;
+  max-width: 1000px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: center;
   background-color: #edf6f9;
 }
