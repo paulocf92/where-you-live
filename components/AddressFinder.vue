@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <form class="add-address-form" @submit.prevent="addAddress">
+    <form class="add-address-form" @submit.prevent="storeAddress">
       <v-row
         ><v-col class="pa-0 pb-2" cols="12" align="start"
           >Informe um CEP para buscar:
@@ -42,7 +42,7 @@
             background-color="rgba(255,255,255,0.85)"
             required
             :rules="[rules.required]"
-            :disabled="loading"
+            :disabled="disableFields"
             @keypress.enter.prevent="$refs.numberRef.focus()"
           ></v-text-field>
         </v-col>
@@ -61,7 +61,6 @@
             background-color="rgba(255,255,255,0.85)"
             required
             :rules="[rules.required]"
-            :disabled="loading"
             @keypress.enter.capture.prevent="$refs.complementRef.focus()"
           ></v-text-field>
         </v-col>
@@ -78,7 +77,6 @@
             label="Complemento"
             placeholder="Complemento"
             background-color="rgba(255,255,255,0.85)"
-            :disabled="loading"
             @keypress.enter.prevent="$refs.neighborhoodRef.focus()"
           ></v-text-field>
         </v-col>
@@ -97,7 +95,7 @@
             background-color="rgba(255,255,255,0.85)"
             required
             :rules="[rules.required]"
-            :disabled="loading"
+            :disabled="disableFields"
             @keypress.enter.prevent="$refs.cityRef.focus()"
           ></v-text-field>
         </v-col>
@@ -116,7 +114,7 @@
             background-color="rgba(255,255,255,0.85)"
             required
             :rules="[rules.required]"
-            :disabled="loading"
+            :disabled="disableFields"
             @keypress.enter.prevent="$refs.stateRef.focus()"
           ></v-text-field>
         </v-col>
@@ -135,7 +133,7 @@
             background-color="rgba(255,255,255,0.85)"
             required
             :rules="[rules.required]"
-            :disabled="loading"
+            :disabled="disableFields"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -159,7 +157,7 @@
 </template>
 
 <script>
-import { mapState /* mapActions */ } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data() {
@@ -168,6 +166,7 @@ export default {
       rules: {
         required: value => !!value || 'Preencha este campo.',
       },
+      disableFields: true,
       address: {
         zipCode: '',
         street: '',
@@ -183,20 +182,21 @@ export default {
     ...mapState(['addresses']),
   },
   methods: {
-    // ...mapActions(['fetchAddress']),
-    addAddress() {
-      // verifying duplicates
-      const { zipCode, number } = this.address
+    ...mapActions(['addAddress']),
+    storeAddress() {
+      const { address } = this
 
+      // Prevent duplicates upon storing
       if (
         this.addresses.find(
-          addr => addr.zipCode === zipCode && addr.number === number
+          addr =>
+            addr.zipCode === address.zipCode && addr.number === address.number
         ) === undefined
       ) {
-        console.log('Adding address')
-        // save...
+        this.addAddress({ address })
 
-        // after saving...
+        this.disableFields = true
+
         this.address = {
           zipCode: '',
           street: '',
@@ -206,6 +206,7 @@ export default {
           city: '',
           state: '',
         }
+
         this.$refs.zipSearch.focus()
       }
     },
@@ -225,7 +226,6 @@ export default {
           throw new Error('Invalid ZIP')
         }
 
-        console.log(`Fetching zip: ${data.cep}`)
         this.address = {
           zipCode: formattedZip,
           street: data.logradouro,
@@ -236,13 +236,17 @@ export default {
           state: data.uf,
         }
 
-        // console.log(data)
+        this.disableFields = !formattedZip.endsWith('000')
       } catch (err) {
         console.log(err)
       }
 
       this.loading = !this.loading
-      setTimeout(() => this.$refs.streetRef.focus())
+      setTimeout(() =>
+        formattedZip.endsWith('000')
+          ? this.$refs.streetRef.focus()
+          : this.$refs.numberRef.focus()
+      )
     },
   },
 }

@@ -8,4 +8,8 @@ export const mutations = {
   },
 }
 
-export const actions = {}
+export const actions = {
+  addAddress({ commit }, { address }) {
+    commit('ADD_ADDRESS', address)
+  },
+}
