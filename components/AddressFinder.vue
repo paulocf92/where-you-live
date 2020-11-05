@@ -1,13 +1,13 @@
 <template>
-  <v-container>
+  <div class="address-finder">
     <form class="add-address-form" @submit.prevent="storeAddress">
       <v-row
-        ><v-col class="pa-0 pb-2" cols="12" align="start"
+        ><v-col class="pa-0 pb-2 pl-3" cols="12" align="start"
           >Informe um CEP para buscar:
         </v-col></v-row
       >
       <v-row>
-        <v-col class="pa-0" cols="8">
+        <v-col class="pa-0 pl-3" cols="8">
           <v-text-field
             ref="zipSearch"
             v-model="address.zipCode"
@@ -21,7 +21,6 @@
             background-color="rgba(255,255,255,0.85)"
             autofocus
             required
-            :rules="[rules.required]"
             :disabled="loading"
             :loading="loading"
             @keypress.enter.prevent="fetchAddress"
@@ -29,7 +28,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pt-3" cols="18">
+        <v-col class="pa-0 pt-3 pl-3" cols="10">
           <v-text-field
             ref="streetRef"
             v-model="address.street"
@@ -41,14 +40,13 @@
             placeholder="Logradouro"
             background-color="rgba(255,255,255,0.85)"
             required
-            :rules="[rules.required]"
             :disabled="disableFields"
             @keypress.enter.prevent="$refs.numberRef.focus()"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0" cols="12">
+        <v-col class="pa-0 pl-3" cols="10">
           <v-text-field
             ref="numberRef"
             v-model="address.number"
@@ -60,13 +58,13 @@
             placeholder="Número"
             background-color="rgba(255,255,255,0.85)"
             required
-            :rules="[rules.required]"
-            @keypress.enter.capture.prevent="$refs.complementRef.focus()"
+            @keypress.enter.prevent="$refs.complementRef.focus()"
           ></v-text-field>
         </v-col>
       </v-row>
+
       <v-row>
-        <v-col class="pa-0" cols="12">
+        <v-col class="pa-0 pl-3" cols="10">
           <v-text-field
             ref="complementRef"
             v-model="address.complement"
@@ -77,12 +75,12 @@
             label="Complemento"
             placeholder="Complemento"
             background-color="rgba(255,255,255,0.85)"
-            @keypress.enter.prevent="$refs.neighborhoodRef.focus()"
+            @keypress.enter="checkNextFocus"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0" cols="12">
+        <v-col class="pa-0 pl-3" cols="10">
           <v-text-field
             ref="neighborhoodRef"
             v-model="address.neighborhood"
@@ -94,14 +92,13 @@
             placeholder="Bairro"
             background-color="rgba(255,255,255,0.85)"
             required
-            :rules="[rules.required]"
             :disabled="disableFields"
             @keypress.enter.prevent="$refs.cityRef.focus()"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0" cols="12">
+        <v-col class="pa-0 pl-3" cols="10">
           <v-text-field
             ref="cityRef"
             v-model="address.city"
@@ -113,14 +110,13 @@
             placeholder="Cidade"
             background-color="rgba(255,255,255,0.85)"
             required
-            :rules="[rules.required]"
             :disabled="disableFields"
             @keypress.enter.prevent="$refs.stateRef.focus()"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0" cols="12">
+        <v-col class="pa-0 pl-3" cols="10">
           <v-text-field
             ref="stateRef"
             v-model="address.state"
@@ -132,13 +128,12 @@
             placeholder="Estado"
             background-color="rgba(255,255,255,0.85)"
             required
-            :rules="[rules.required]"
             :disabled="disableFields"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0" cols="12">
+        <v-col class="pa-0 pl-3" cols="10">
           <v-btn
             ref="submitRef"
             type="submit"
@@ -153,7 +148,7 @@
         </v-col>
       </v-row>
     </form>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -163,9 +158,6 @@ export default {
   data() {
     return {
       loading: false,
-      rules: {
-        required: value => !!value || 'Preencha este campo.',
-      },
       disableFields: true,
       address: {
         zipCode: '',
@@ -208,6 +200,14 @@ export default {
         }
 
         this.$refs.zipSearch.focus()
+      } else {
+        alert('Endereço já está cadastrado!')
+      }
+    },
+    checkNextFocus(e) {
+      if (!this.disableFields) {
+        e.preventDefault()
+        this.$refs.neighborhoodRef.focus()
       }
     },
     async fetchAddress() {
@@ -238,7 +238,7 @@ export default {
 
         this.disableFields = !formattedZip.endsWith('000')
       } catch (err) {
-        console.log(err)
+        alert('Não foi possível localizar o CEP informado!')
       }
 
       this.loading = !this.loading
@@ -252,8 +252,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .add-address-form {
   width: 300px;
+}
+.address-finder {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
 }
 </style>
