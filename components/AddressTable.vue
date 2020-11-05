@@ -111,7 +111,7 @@ export default {
       },
       { text: 'Logradouro', value: 'street' },
       { text: 'Nº', width: 80, value: 'number' },
-      { text: 'Compl.', width: 100, value: 'complement' },
+      { text: 'Compl.', width: 150, value: 'complement' },
       { text: 'Bairro', value: 'neighborhood' },
       { text: 'Cidade', value: 'city' },
       { text: 'Estado', width: 100, value: 'state' },

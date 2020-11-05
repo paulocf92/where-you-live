@@ -1,12 +1,14 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="3"> <AddressFinder /> </v-col>
-      <v-col cols="9">
+  <div class="main">
+    <v-row no-gutters>
+      <v-col lg="3" md="4" xs="12" sm="12" class="pb-4">
+        <AddressFinder />
+      </v-col>
+      <v-col lg="9" md="8">
         <AddressTable />
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -22,10 +24,11 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.main {
   display: flex;
-  padding: 10px 20px;
-  min-height: 100vh;
+  flex-wrap: wrap;
+  padding: 30px;
+  min-height: calc(100vh - 48px);
   background-color: #edf6f9;
 }
 </style>

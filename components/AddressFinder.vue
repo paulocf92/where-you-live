@@ -28,7 +28,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pt-3 pl-3" cols="10">
+        <v-col class="pa-0 pt-3 pl-3" cols="11">
           <v-text-field
             ref="streetRef"
             v-model="address.street"
@@ -46,7 +46,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pl-3" cols="10">
+        <v-col class="pa-0 pl-3" cols="11">
           <v-text-field
             ref="numberRef"
             v-model="address.number"
@@ -64,7 +64,7 @@
       </v-row>
 
       <v-row>
-        <v-col class="pa-0 pl-3" cols="10">
+        <v-col class="pa-0 pl-3" cols="11">
           <v-text-field
             ref="complementRef"
             v-model="address.complement"
@@ -80,7 +80,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pl-3" cols="10">
+        <v-col class="pa-0 pl-3" cols="11">
           <v-text-field
             ref="neighborhoodRef"
             v-model="address.neighborhood"
@@ -98,7 +98,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pl-3" cols="10">
+        <v-col class="pa-0 pl-3" cols="11">
           <v-text-field
             ref="cityRef"
             v-model="address.city"
@@ -116,7 +116,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pl-3" cols="10">
+        <v-col class="pa-0 pl-3" cols="11">
           <v-text-field
             ref="stateRef"
             v-model="address.state"
@@ -133,7 +133,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="pa-0 pl-3" cols="10">
+        <v-col class="pa-0 pl-3" cols="11">
           <v-btn
             ref="submitRef"
             type="submit"
