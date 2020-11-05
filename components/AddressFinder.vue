@@ -12,7 +12,7 @@
             ref="zipSearch"
             v-model="address.zipCode"
             v-mask="'##.###-###'"
-            maxlength="25"
+            minlength="10"
             dense
             outlined
             color="#63AFAD"
@@ -211,8 +211,7 @@ export default {
       }
     },
     async fetchAddress(e) {
-      // Validate ZIP on enter
-      if (this.address.zipCode.length < 10) return
+      if (!this.address.zipCode) return
 
       e.preventDefault()
 
@@ -242,16 +241,18 @@ export default {
         }
 
         this.disableFields = !formattedZip.endsWith('000')
+
+        setTimeout(() =>
+          formattedZip.endsWith('000')
+            ? this.$refs.streetRef.focus()
+            : this.$refs.numberRef.focus()
+        )
       } catch (err) {
         alert('Não foi possível localizar o CEP informado!')
+        setTimeout(() => this.$refs.zipSearch.focus())
       }
 
       this.loading = !this.loading
-      setTimeout(() =>
-        formattedZip.endsWith('000')
-          ? this.$refs.streetRef.focus()
-          : this.$refs.numberRef.focus()
-      )
     },
   },
 }
