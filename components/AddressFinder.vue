@@ -211,6 +211,7 @@ export default {
       }
     },
     async fetchAddress(e) {
+      // Enforce required on ZIP Search
       if (!this.address.zipCode) return
 
       e.preventDefault()

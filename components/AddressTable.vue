@@ -20,43 +20,43 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.zipCode"
+                      v-model="updatedAddress.zipCode"
                       label="CEP"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.street"
+                      v-model="updatedAddress.street"
                       label="Logradouro"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.number"
+                      v-model="updatedAddress.number"
                       label="Número"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.complement"
+                      v-model="updatedAddress.complement"
                       label="Complemento"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.neighborhood"
+                      v-model="updatedAddress.neighborhood"
                       label="Bairro"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.city"
+                      v-model="updatedAddress.city"
                       label="Cidade"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedAddress.state"
+                      v-model="updatedAddress.state"
                       label="Estado"
                     ></v-text-field>
                   </v-col>
@@ -69,7 +69,7 @@
               <v-btn color="blue darken-1" text @click="close">
                 Cancelar
               </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Salvar </v-btn>
+              <v-btn color="blue darken-1" text @click="update"> Salvar </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -81,9 +81,9 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Não</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteAddressConfirm"
-                >Sim</v-btn
-              >
+              <v-btn color="blue darken-1" text @click="deleteConfirm">
+                Sim
+              </v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -91,15 +91,13 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editAddress(item)">
-        mdi-pencil
-      </v-icon>
-      <v-icon small @click="deleteAddress(item)"> mdi-delete </v-icon>
+      <v-icon small class="mr-2" @click="updateItem(item)">mdi-pencil</v-icon>
+      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
   </v-data-table>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data: () => ({
@@ -119,9 +117,8 @@ export default {
       { text: 'Estado', width: 100, value: 'state' },
       { text: 'Ações', width: 80, value: 'actions', sortable: false },
     ],
-    desserts: [],
-    editedIndex: -1,
-    editedAddress: {
+    updatedIndex: -1,
+    updatedAddress: {
       zipCode: '',
       street: '',
       number: '',
@@ -155,46 +152,48 @@ export default {
   },
 
   methods: {
-    editAddress(address) {
-      this.editedIndex = this.desserts.indexOf(address)
-      this.editedAddress = Object.assign({}, address)
+    ...mapActions(['updateAddress', 'deleteAddress']),
+    updateItem(address) {
+      this.updatedIndex = this.addresses.indexOf(address)
+      this.updatedAddress = Object.assign({}, address)
       this.dialog = true
     },
 
-    deleteAddress(address) {
-      this.editedIndex = this.desserts.indexOf(address)
-      this.editedAddress = Object.assign({}, address)
-      this.dialogDelete = true
-    },
+    update() {
+      this.updateAddress({
+        id: this.updatedIndex,
+        address: this.updatedAddress,
+      })
 
-    deleteAddressConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
+      this.close()
     },
 
     close() {
       this.dialog = false
       this.$nextTick(() => {
-        this.editedAddress = Object.assign({}, this.defaultAddress)
-        this.editedIndex = -1
+        this.updatedAddress = Object.assign({}, this.defaultAddress)
+        this.updatedIndex = -1
       })
+    },
+
+    deleteItem(address) {
+      this.updatedIndex = this.addresses.indexOf(address)
+      this.dialogDelete = true
+    },
+
+    deleteConfirm() {
+      this.deleteAddress({
+        id: this.updatedIndex,
+      })
+
+      this.closeDelete()
     },
 
     closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
-        this.editedAddress = Object.assign({}, this.defaultAddress)
-        this.editedIndex = -1
+        this.updatedIndex = -1
       })
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedAddress)
-      } else {
-        this.desserts.push(this.editedAddress)
-      }
-      this.close()
     },
   },
 }
