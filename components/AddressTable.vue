@@ -151,8 +151,14 @@ export default {
     },
   },
 
+  beforeCreate() {
+    if (process.browser) {
+      this.$store.dispatch('initializeStore')
+    }
+  },
+
   methods: {
-    ...mapActions(['updateAddress', 'deleteAddress']),
+    ...mapActions(['updateAddress', 'deleteAddress', 'initializeStore']),
     updateItem(address) {
       this.updatedIndex = this.addresses.indexOf(address)
       this.updatedAddress = Object.assign({}, address)
