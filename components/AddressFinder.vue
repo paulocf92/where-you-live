@@ -23,7 +23,7 @@
             required
             :disabled="loading"
             :loading="loading"
-            @keypress.enter.prevent="fetchAddress"
+            @keypress.enter="fetchAddress"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -210,7 +210,12 @@ export default {
         this.$refs.neighborhoodRef.focus()
       }
     },
-    async fetchAddress() {
+    async fetchAddress(e) {
+      // Validate ZIP on enter
+      if (this.address.zipCode.length < 10) return
+
+      e.preventDefault()
+
       this.loading = !this.loading
 
       const { zipCode: formattedZip } = this.address
