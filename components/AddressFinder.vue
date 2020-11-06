@@ -18,7 +18,7 @@
             color="#63AFAD"
             label="CEP"
             placeholder="CEP"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             autofocus
             required
             :disabled="loading"
@@ -38,7 +38,7 @@
             color="#63AFAD"
             label="Logradouro"
             placeholder="Logradouro"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             required
             :disabled="disableFields"
             @keypress.enter.prevent="$refs.numberRef.focus()"
@@ -56,7 +56,7 @@
             color="#63AFAD"
             label="Número"
             placeholder="Número"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             required
             @keypress.enter.prevent="$refs.complementRef.focus()"
           ></v-text-field>
@@ -74,7 +74,7 @@
             color="#63AFAD"
             label="Complemento"
             placeholder="Complemento"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             @keypress.enter="checkNextFocus"
           ></v-text-field>
         </v-col>
@@ -90,7 +90,7 @@
             color="#63AFAD"
             label="Bairro"
             placeholder="Bairro"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             required
             :disabled="disableFields"
             @keypress.enter.prevent="$refs.cityRef.focus()"
@@ -108,7 +108,7 @@
             color="#63AFAD"
             label="Cidade"
             placeholder="Cidade"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             required
             :disabled="disableFields"
             @keypress.enter.prevent="$refs.stateRef.focus()"
@@ -126,7 +126,7 @@
             color="#63AFAD"
             label="Estado"
             placeholder="Estado"
-            background-color="rgba(255,255,255,0.85)"
+            :background-color="fieldBackground"
             required
             :disabled="disableFields"
           ></v-text-field>
@@ -139,7 +139,7 @@
             type="submit"
             block
             depressed
-            color="#E69E84"
+            :color="submitBtnBackground"
             :ripple="{
               class: 'white--text',
             }"
@@ -172,6 +172,16 @@ export default {
   },
   computed: {
     ...mapState(['addresses']),
+    fieldBackground() {
+      return this.$vuetify.theme.themes[
+        this.$vuetify.theme.dark ? 'dark' : 'light'
+      ]['custom-field-background']
+    },
+    submitBtnBackground() {
+      return this.$vuetify.theme.themes[
+        this.$vuetify.theme.dark ? 'dark' : 'light'
+      ]['custom-submit-btn-background']
+    },
   },
   methods: {
     ...mapActions(['addAddress']),

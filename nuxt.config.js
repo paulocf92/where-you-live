@@ -29,6 +29,23 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
+  vuetify: {
+    theme: {
+      themes: {
+        light: {
+          'custom-main-background': '#edf6f9',
+          'custom-field-background': 'rgba(255,255,255,0.85)',
+          'custom-submit-btn-background': '#e69e84',
+        },
+        dark: {
+          'custom-main-background': '#181818',
+          'custom-field-background': 'rgba(255,255,255,0.02)',
+          'custom-submit-btn-background': '#e18a6b',
+        },
+      },
+    },
+  },
+
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios

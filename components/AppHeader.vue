@@ -1,5 +1,14 @@
 <template>
-  <v-app-bar app dense color="#006d77">
+  <v-app-bar app dense color="#006d77" class="pl-4 pr-4">
+    <v-switch
+      v-model="$vuetify.theme.dark"
+      flat
+      inset
+      dense
+      hide-details
+      color="white"
+      append-icon="mdi-white-balance-sunny"
+    />
     <div class="title">
       <v-icon size="35" color="#fcfcfc">mdi-home-search-outline</v-icon> Where
       You Live
