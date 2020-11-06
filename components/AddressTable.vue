@@ -1,104 +1,106 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="addresses"
-    sort-by="zipCode"
-    class="elevation-1"
-    :no-data-text="$t('noDataLabel')"
-  >
-    <template v-slot:top>
-      <v-toolbar flat dense>
-        <v-toolbar-title>{{ $t('addressesLabel') }}</v-toolbar-title>
-        <v-dialog v-model="dialog" max-width="1000px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ $t('editAddressLabel') }}</span>
-            </v-card-title>
+  <client-only>
+    <v-data-table
+      :headers="headers"
+      :items="addresses"
+      sort-by="zipCode"
+      class="elevation-1"
+      :no-data-text="$t('noDataLabel')"
+    >
+      <template v-slot:top>
+        <v-toolbar flat dense>
+          <v-toolbar-title>{{ $t('addressesLabel') }}</v-toolbar-title>
+          <v-dialog v-model="dialog" max-width="1000px">
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ $t('editAddressLabel') }}</span>
+              </v-card-title>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.zipCode"
-                      :label="$t('zipCodeLabel')"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.street"
-                      :label="$t('streetLabel')"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.number"
-                      :label="$t('numberLabel')"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.complement"
-                      :label="$t('complementLabel')"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.neighborhood"
-                      :label="$t('neighborhoodLabel')"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.city"
-                      :label="$t('cityLabel')"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="updatedAddress.state"
-                      :label="$t('stateLabel')"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.zipCode"
+                        :label="$t('zipCodeLabel')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.street"
+                        :label="$t('streetLabel')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.number"
+                        :label="$t('numberLabel')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.complement"
+                        :label="$t('complementLabel')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.neighborhood"
+                        :label="$t('neighborhoodLabel')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.city"
+                        :label="$t('cityLabel')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="updatedAddress.state"
+                        :label="$t('stateLabel')"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">
-                {{ $t('actionCancelLabel') }}
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="update">
-                {{ $t('actionSaveLabel') }}
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline">{{
-              $t('confirmAddressDeletionLabel')
-            }}</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">{{
-                $t('noLabel')
-              }}</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteConfirm">
-                {{ $t('yesLabel') }}
-              </v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="updateItem(item)">mdi-pencil</v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-    </template>
-  </v-data-table>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  {{ $t('actionCancelLabel') }}
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="update">
+                  {{ $t('actionSaveLabel') }}
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">{{
+                $t('confirmAddressDeletionLabel')
+              }}</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete">{{
+                  $t('noLabel')
+                }}</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteConfirm">
+                  {{ $t('yesLabel') }}
+                </v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="updateItem(item)">mdi-pencil</v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
+    </v-data-table>
+  </client-only>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
