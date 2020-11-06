@@ -1,3 +1,5 @@
+import i18n from './config/i18n'
+
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
@@ -27,6 +29,23 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
+    [
+      'nuxt-i18n',
+      {
+        defaultLocale: 'ptbr',
+        locales: [
+          {
+            code: 'ptbr',
+            name: 'Português',
+          },
+          {
+            code: 'en',
+            name: 'English',
+          },
+        ],
+        vueI18n: i18n,
+      },
+    ],
   ],
 
   vuetify: {

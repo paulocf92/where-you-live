@@ -4,15 +4,15 @@
     :items="addresses"
     sort-by="zipCode"
     class="elevation-1"
-    no-data-text="Sem dados"
+    :no-data-text="$t('noDataLabel')"
   >
     <template v-slot:top>
       <v-toolbar flat dense>
-        <v-toolbar-title>Endereços</v-toolbar-title>
+        <v-toolbar-title>{{ $t('addressesLabel') }}</v-toolbar-title>
         <v-dialog v-model="dialog" max-width="1000px">
           <v-card>
             <v-card-title>
-              <span class="headline">Editar Endereço</span>
+              <span class="headline">{{ $t('editAddressLabel') }}</span>
             </v-card-title>
 
             <v-card-text>
@@ -21,43 +21,43 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.zipCode"
-                      label="CEP"
+                      :label="$t('zipCodeLabel')"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.street"
-                      label="Logradouro"
+                      :label="$t('streetLabel')"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.number"
-                      label="Número"
+                      :label="$t('numberLabel')"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.complement"
-                      label="Complemento"
+                      :label="$t('complementLabel')"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.neighborhood"
-                      label="Bairro"
+                      :label="$t('neighborhoodLabel')"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.city"
-                      label="Cidade"
+                      :label="$t('cityLabel')"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="updatedAddress.state"
-                      label="Estado"
+                      :label="$t('stateLabel')"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -67,22 +67,26 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">
-                Cancelar
+                {{ $t('actionCancelLabel') }}
               </v-btn>
-              <v-btn color="blue darken-1" text @click="update"> Salvar </v-btn>
+              <v-btn color="blue darken-1" text @click="update">
+                {{ $t('actionSaveLabel') }}
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline"
-              >Confirma a exclusão deste endereço?</v-card-title
-            >
+            <v-card-title class="headline">{{
+              $t('confirmAddressDeletionLabel')
+            }}</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Não</v-btn>
+              <v-btn color="blue darken-1" text @click="closeDelete">{{
+                $t('noLabel')
+              }}</v-btn>
               <v-btn color="blue darken-1" text @click="deleteConfirm">
-                Sim
+                {{ $t('yesLabel') }}
               </v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -103,20 +107,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    headers: [
-      {
-        text: 'CEP',
-        width: 110,
-        value: 'zipCode',
-      },
-      { text: 'Logradouro', value: 'street' },
-      { text: 'Nº', width: 80, value: 'number' },
-      { text: 'Compl.', width: 150, value: 'complement' },
-      { text: 'Bairro', value: 'neighborhood' },
-      { text: 'Cidade', value: 'city' },
-      { text: 'Estado', width: 100, value: 'state' },
-      { text: 'Ações', width: 80, value: 'actions', sortable: false },
-    ],
+
     updatedIndex: -1,
     updatedAddress: {
       zipCode: '',
@@ -140,6 +131,34 @@ export default {
 
   computed: {
     ...mapState(['addresses']),
+    headers() {
+      const locale = this.$i18n.locale
+      const t = this.$t.bind(this)
+
+      return [
+        {
+          text: t('zipCodeLabel', locale),
+          width: 110,
+          value: 'zipCode',
+        },
+        { text: t('streetLabel', locale), value: 'street' },
+        { text: t('numberLabelShort', locale), width: 80, value: 'number' },
+        {
+          text: t('complementLabelShort', locale),
+          width: 150,
+          value: 'complement',
+        },
+        { text: t('neighborhoodLabel', locale), value: 'neighborhood' },
+        { text: t('cityLabel', locale), value: 'city' },
+        { text: t('stateLabel', locale), width: 100, value: 'state' },
+        {
+          text: t('actionsLabel', locale),
+          width: 80,
+          value: 'actions',
+          sortable: false,
+        },
+      ]
+    },
   },
 
   watch: {

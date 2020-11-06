@@ -1,6 +1,6 @@
 {
   "name": "where-you-live",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -16,7 +16,9 @@
     "@nuxtjs/pwa": "^3.0.2",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
-    "v-mask": "^2.2.3"
+    "nuxt-i18n": "^6.15.4",
+    "v-mask": "^2.2.3",
+    "vue-country-flag": "^2.0.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",

@@ -3,7 +3,7 @@
     <form class="add-address-form" @submit.prevent="storeAddress">
       <v-row
         ><v-col class="pa-0 pb-2 pl-3" cols="12" align="start"
-          >Informe um CEP para buscar:
+          >{{ $t('zipFinderLabel') }}:
         </v-col></v-row
       >
       <v-row>
@@ -16,8 +16,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="CEP"
-            placeholder="CEP"
+            :label="$t('zipCodeLabel')"
+            :placeholder="$t('zipCodeLabel')"
             :background-color="fieldBackground"
             autofocus
             required
@@ -36,8 +36,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="Logradouro"
-            placeholder="Logradouro"
+            :label="$t('streetLabel')"
+            :placeholder="$t('streetLabel')"
             :background-color="fieldBackground"
             required
             :disabled="disableFields"
@@ -54,8 +54,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="Número"
-            placeholder="Número"
+            :label="$t('numberLabel')"
+            :placeholder="$t('numberLabel')"
             :background-color="fieldBackground"
             required
             @keypress.enter.prevent="$refs.complementRef.focus()"
@@ -72,8 +72,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="Complemento"
-            placeholder="Complemento"
+            :label="$t('complementLabel')"
+            :placeholder="$t('complementLabel')"
             :background-color="fieldBackground"
             @keypress.enter="checkNextFocus"
           ></v-text-field>
@@ -88,8 +88,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="Bairro"
-            placeholder="Bairro"
+            :label="$t('neighborhoodLabel')"
+            :placeholder="$t('neighborhoodLabel')"
             :background-color="fieldBackground"
             required
             :disabled="disableFields"
@@ -106,8 +106,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="Cidade"
-            placeholder="Cidade"
+            :label="$t('cityLabel')"
+            :placeholder="$t('cityLabel')"
             :background-color="fieldBackground"
             required
             :disabled="disableFields"
@@ -124,8 +124,8 @@
             dense
             outlined
             color="#63AFAD"
-            label="Estado"
-            placeholder="Estado"
+            :label="$t('stateLabel')"
+            :placeholder="$t('stateLabel')"
             :background-color="fieldBackground"
             required
             :disabled="disableFields"
@@ -143,7 +143,7 @@
             :ripple="{
               class: 'white--text',
             }"
-            >Incluir Endereço</v-btn
+            >{{ $t('submitAddressLabel') }}</v-btn
           >
         </v-col>
       </v-row>
@@ -186,6 +186,8 @@ export default {
   methods: {
     ...mapActions(['addAddress']),
     storeAddress() {
+      // const locale = this.$i18n.locale
+      // const t = this.$t.bind(this)
       const { address } = this
 
       // Prevent duplicates upon storing
@@ -211,7 +213,9 @@ export default {
 
         this.$refs.zipSearch.focus()
       } else {
-        alert('Endereço já está cadastrado!')
+        const locale = this.$i18n.locale
+        const t = this.$t.bind(this)
+        alert(t('duplicateAddressLabel', locale))
       }
     },
     checkNextFocus(e) {
@@ -259,7 +263,9 @@ export default {
             : this.$refs.numberRef.focus()
         )
       } catch (err) {
-        alert('Não foi possível localizar o CEP informado!')
+        const locale = this.$i18n.locale
+        const t = this.$t.bind(this)
+        alert(t('invalidZipCodeLabel', locale))
         setTimeout(() => this.$refs.zipSearch.focus())
       }
 
