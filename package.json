@@ -1,6 +1,6 @@
 {
   "name": "where-you-live",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.7.1",
   "private": true,
   "scripts": {
     "dev": "nuxt",
